@@ -3,11 +3,14 @@ import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Game from "./components/Game";
 import Home from "./components/Home";
+import { Box } from "@chakra-ui/react";
 
 const App: FC = () => {
   return (
     <>
-      <h1>Typing game</h1>
+      <Box as="h1" my={10}>
+        <a href="/">Typing game</a>
+      </Box>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="1" element={<Game level={1} />} />

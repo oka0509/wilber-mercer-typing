@@ -1,5 +1,12 @@
 import { FC, useState, useEffect } from "react";
 import "./Game.css";
+import {
+  Center,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+} from "@chakra-ui/react";
 
 type Level = {
   level: number;
@@ -30,7 +37,9 @@ const Game: FC<Level> = ({ level }) => {
     if (e.key === targetWord[currentIndex]) {
       if (currentIndex + 1 === targetWord.length) {
         setCurrentIndex(0);
-        setTargetWord(targetWords[Math.floor(Math.random() * targetWords.length)]);
+        setTargetWord(
+          targetWords[Math.floor(Math.random() * targetWords.length)]
+        );
       } else {
         charSpans[currentIndex].classList.remove("waiting-letters");
         charSpans[currentIndex].classList.add("typed-letters");
@@ -46,15 +55,26 @@ const Game: FC<Level> = ({ level }) => {
   };
 
   return (
-    <div>
-      <h2>level: {level}</h2>
-      <div id="textbox" onKeyDown={(e) => handleTargetWord(e)} tabIndex={0} autoFocus>
-        {targetWord.split("").map((char, idx) => (
-          <span key={idx}>{char}</span>
-        ))}
-      </div>
-      <p>number of errors: {errorCount}</p>
-    </div>
+    <Card>
+      <CardHeader>
+        <h2>level: {level}</h2>
+      </CardHeader>
+      <CardBody>
+        <div
+          id="textbox"
+          onKeyDown={(e) => handleTargetWord(e)}
+          tabIndex={0}
+          autoFocus
+        >
+          {targetWord.split("").map((char, idx) => (
+            <span key={idx}>{char}</span>
+          ))}
+        </div>
+      </CardBody>
+      <CardFooter>
+        <Center w="full">number of errors: {errorCount}</Center>
+      </CardFooter>
+    </Card>
   );
 };
 
