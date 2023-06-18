@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import "./Game.css";
 
 type Level = {
@@ -9,14 +9,18 @@ const Game: FC<Level> = ({ level }) => {
   const [targetWord, setTargetWord] = useState("hogehoge");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
+  const [targetWords, setTargetWords] = useState<string[]>([]);
+
+  useEffect(() => {
+    setTargetWords(["foo", "baz", "foobar", "hoge hoge", "aaa", "bbb"]);
+  }, []);
 
   const handleTargetWord = (e: React.KeyboardEvent<HTMLDivElement>) => {
     //正しいキーが押されたとき
     if (e.key === targetWord[currentIndex]) {
       if (currentIndex + 1 === targetWord.length) {
         setCurrentIndex(0);
-        const randomWords = ["foo", "baz", "foobar", "hoge hoge", "aaa", "bbb"];
-        setTargetWord(randomWords[Math.floor(Math.random() * 6)]);
+        setTargetWord(targetWords[Math.floor(Math.random() * 6)]);
       } else {
         setCurrentIndex(currentIndex + 1);
       }
