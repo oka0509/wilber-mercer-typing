@@ -6,7 +6,7 @@ type Level = {
 };
 
 const Game: FC<Level> = ({ level }) => {
-  const [targetWord, setTargetWord] = useState("hogehoge");
+  const [targetWord, setTargetWord] = useState("first");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
   const [targetWords, setTargetWords] = useState<string[]>([]);
@@ -15,18 +15,32 @@ const Game: FC<Level> = ({ level }) => {
     setTargetWords(["foo", "baz", "foobar", "hoge hoge", "aaa", "bbb"]);
   }, []);
 
+  useEffect(() => {
+    const charSpans = document.querySelector("#textbox")!.children;
+    [...charSpans].forEach((e) => {
+      e.classList.remove("typed-letters");
+      e.classList.remove("typo-letters");
+      e.classList.add("waiting-letters");
+    });
+  }, [targetWord]);
+
   const handleTargetWord = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const charSpans = document.querySelector("#textbox")!.children;
     //正しいキーが押されたとき
     if (e.key === targetWord[currentIndex]) {
       if (currentIndex + 1 === targetWord.length) {
         setCurrentIndex(0);
-        setTargetWord(targetWords[Math.floor(Math.random() * 6)]);
+        setTargetWord(targetWords[Math.floor(Math.random() * targetWords.length)]);
       } else {
+        charSpans[currentIndex].classList.remove("waiting-letters");
+        charSpans[currentIndex].classList.add("typed-letters");
         setCurrentIndex(currentIndex + 1);
       }
     }
     //間違ったキーが押されたとき
     else {
+      charSpans[currentIndex].classList.remove("waiting-letters");
+      charSpans[currentIndex].classList.add("typo-letters");
       setErrorCount((cnt) => cnt + 1);
     }
   };
@@ -34,13 +48,10 @@ const Game: FC<Level> = ({ level }) => {
   return (
     <div>
       <h2>level: {level}</h2>
-      <div onKeyDown={(e) => handleTargetWord(e)} tabIndex={0} autoFocus>
-        <span className="typed-letters">
-          {targetWord.slice(0, currentIndex)}
-        </span>
-        <span className="waiting-letters">
-          {targetWord.slice(currentIndex)}
-        </span>
+      <div id="textbox" onKeyDown={(e) => handleTargetWord(e)} tabIndex={0} autoFocus>
+        {targetWord.split("").map((char, idx) => (
+          <span key={idx}>{char}</span>
+        ))}
       </div>
       <p>number of errors: {errorCount}</p>
     </div>

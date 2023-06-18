@@ -1,3 +1,7 @@
 .waiting-letters {
   opacity: 0.2;
 }
+
+.typo-letters {
+  color: red;
+}
