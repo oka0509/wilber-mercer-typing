@@ -6,6 +6,13 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
 } from "@chakra-ui/react";
 
 type Level = {
@@ -19,6 +26,7 @@ const Game: FC<Level> = ({ level }) => {
   const [currentChar, setCurrentChar] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const charSpans = document.querySelector("#textbox")!.children;
@@ -37,9 +45,15 @@ const Game: FC<Level> = ({ level }) => {
       //最後の文字に到達したとき
       if (currentChar + 1 === targetWord.length) {
         charSpans[currentChar].removeAttribute("id");
-        setCurrentChar(0);
-        setTargetWord(targetWords[currentIndex + 1]);
-        setCurrentIndex(currentIndex + 1);
+        charSpans[currentChar].classList.add("typed-letters");
+        charSpans[currentChar].classList.remove("waiting-letters");
+        if (currentIndex === targetWords.length - 1) {
+          setIsOpen(true);
+        } else {
+          setCurrentChar(0);
+          setTargetWord(targetWords[currentIndex + 1]);
+          setCurrentIndex(currentIndex + 1);
+        }
       }
       //途中の文字のとき
       else {
@@ -59,26 +73,47 @@ const Game: FC<Level> = ({ level }) => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <h2>level: {level}</h2>
-      </CardHeader>
-      <CardBody fontSize="5xl">
-        <div
-          id="textbox"
-          onKeyDown={(e) => handleTargetWord(e)}
-          tabIndex={0}
-          autoFocus
-        >
-          {targetWord.split("").map((char, idx) => (
-            <span key={idx}>{char}</span>
-          ))}
-        </div>
-      </CardBody>
-      <CardFooter>
-        <Center w="full">number of errors: {errorCount}</Center>
-      </CardFooter>
-    </Card>
+    <>
+      <Card>
+        <CardHeader>
+          <h2>level: {level}</h2>
+        </CardHeader>
+        <CardBody fontSize="5xl">
+          <div
+            id="textbox"
+            onKeyDown={(e) => handleTargetWord(e)}
+            tabIndex={0}
+            autoFocus
+          >
+            {targetWord.split("").map((char, idx) => (
+              <span key={idx}>{char}</span>
+            ))}
+          </div>
+        </CardBody>
+        <CardFooter>
+          <Center w="full">number of errors: {errorCount}</Center>
+        </CardFooter>
+      </Card>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalBody>
+            <p>test</p>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 
