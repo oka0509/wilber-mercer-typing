@@ -19,7 +19,7 @@ const SuccessModal: FC<ModalProps> = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Modal Title</ModalHeader>
+        <ModalHeader>Result</ModalHeader>
         <ModalBody>
           <p>test</p>
         </ModalBody>
