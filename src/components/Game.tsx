@@ -6,14 +6,9 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
+  useDisclosure,
 } from "@chakra-ui/react";
+import SuccessModal from "./SuccessModal";
 
 type Level = {
   level: number;
@@ -26,7 +21,7 @@ const Game: FC<Level> = ({ level }) => {
   const [currentChar, setCurrentChar] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     const charSpans = document.querySelector("#textbox")!.children;
@@ -48,7 +43,7 @@ const Game: FC<Level> = ({ level }) => {
         charSpans[currentChar].classList.add("typed-letters");
         charSpans[currentChar].classList.remove("waiting-letters");
         if (currentIndex === targetWords.length - 1) {
-          setIsOpen(true);
+          onOpen();
         } else {
           setCurrentChar(0);
           setTargetWord(targetWords[currentIndex + 1]);
@@ -94,25 +89,7 @@ const Game: FC<Level> = ({ level }) => {
           <Center w="full">number of errors: {errorCount}</Center>
         </CardFooter>
       </Card>
-      <Modal
-        isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-        }}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
-          <ModalBody>
-            <p>test</p>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <SuccessModal isOpen={isOpen} onClose={onClose} />
     </>
   );
 };
