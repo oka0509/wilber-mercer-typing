@@ -59,7 +59,7 @@ const Game: FC<Level> = ({ level }) => {
       <CardHeader>
         <h2>level: {level}</h2>
       </CardHeader>
-      <CardBody>
+      <CardBody fontSize="5xl">
         <div
           id="textbox"
           onKeyDown={(e) => handleTargetWord(e)}
