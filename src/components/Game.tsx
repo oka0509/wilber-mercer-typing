@@ -13,15 +13,12 @@ type Level = {
 };
 
 const Game: FC<Level> = ({ level }) => {
-  const [targetWord, setTargetWord] = useState("first");
+  const targetWords = ["foo", "baz", "foobar", "hoge hoge", "aaa", "bbb"];
+
+  const [targetWord, setTargetWord] = useState(targetWords[0]);
   const [currentChar, setCurrentChar] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
-  const [targetWords, setTargetWords] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    setTargetWords(["foo", "baz", "foobar", "hoge hoge", "aaa", "bbb"]);
-  }, []);
 
   useEffect(() => {
     const charSpans = document.querySelector("#textbox")!.children;
@@ -41,12 +38,10 @@ const Game: FC<Level> = ({ level }) => {
       if (currentChar + 1 === targetWord.length) {
         charSpans[currentChar].removeAttribute("id");
         setCurrentChar(0);
-        setTargetWord(
-          targetWords[currentIndex + 1]
-        );
+        setTargetWord(targetWords[currentIndex + 1]);
         setCurrentIndex(currentIndex + 1);
       }
-      //途中の文字のとき 
+      //途中の文字のとき
       else {
         charSpans[currentChar].removeAttribute("id");
         charSpans[currentChar + 1].setAttribute("id", "current-letter");
