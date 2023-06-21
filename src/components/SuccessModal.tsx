@@ -24,7 +24,7 @@ const SuccessModal: FC<ModalProps> = ({ isOpen, onClose }) => {
           <p>test</p>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme='blue' mr={3}>
+          <Button colorScheme="blue" mr={3}>
             <a href="/">ホーム画面に戻る</a>
           </Button>
         </ModalFooter>

@@ -14,6 +14,8 @@ type Level = {
   level: number;
 };
 
+let timerId = -1;
+
 const Game: FC<Level> = ({ level }) => {
   const targetWords = ["foo", "baz", "foobar", "hoge hoge", "aaa", "bbb"];
 
@@ -21,7 +23,22 @@ const Game: FC<Level> = ({ level }) => {
   const [currentChar, setCurrentChar] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(60 * level);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    timerId = setInterval(() => {
+      setTimeLeft((t) => t - 1);
+    }, 1000);
+    return () => clearInterval(timerId as number);
+  }, []);
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      onOpen();
+      clearInterval(timerId as number);
+    }
+  }, [timeLeft, onOpen]);
 
   useEffect(() => {
     const charSpans = document.querySelector("#textbox")!.children;
@@ -87,6 +104,7 @@ const Game: FC<Level> = ({ level }) => {
         </CardBody>
         <CardFooter>
           <Center w="full">number of errors: {errorCount}</Center>
+          <div>timeLeft: {timeLeft}</div>
         </CardFooter>
       </Card>
       <SuccessModal isOpen={isOpen} onClose={onClose} />
