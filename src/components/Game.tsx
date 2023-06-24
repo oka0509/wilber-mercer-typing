@@ -9,6 +9,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import SuccessModal from "./SuccessModal";
+import { Canvas } from "@react-three/fiber";
 
 type Level = {
   level: number;
@@ -87,6 +88,13 @@ const Game: FC<Level> = ({ level }) => {
 
   return (
     <>
+      <Canvas>
+        <pointLight position={[10, 10, 10]} />
+        <mesh>
+          <sphereGeometry />
+          <meshStandardMaterial color="hotpink" />
+        </mesh>
+      </Canvas>
       <Card>
         <CardHeader>
           <h2>level: {level}</h2>
