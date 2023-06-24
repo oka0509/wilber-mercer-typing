@@ -30,13 +30,13 @@ const Game: FC<Level> = ({ level }) => {
     timerId = setInterval(() => {
       setTimeLeft((t) => t - 1);
     }, 1000);
-    return () => clearInterval(timerId as number);
+    return () => clearInterval(timerId);
   }, []);
 
   useEffect(() => {
     if (timeLeft === 0) {
       onOpen();
-      clearInterval(timerId as number);
+      clearInterval(timerId);
     }
   }, [timeLeft, onOpen]);
 
@@ -61,6 +61,7 @@ const Game: FC<Level> = ({ level }) => {
         charSpans[currentChar].classList.remove("waiting-letters");
         if (currentIndex === targetWords.length - 1) {
           onOpen();
+          clearInterval(timerId);
         } else {
           setCurrentChar(0);
           setTargetWord(targetWords[currentIndex + 1]);
@@ -103,11 +104,16 @@ const Game: FC<Level> = ({ level }) => {
           </div>
         </CardBody>
         <CardFooter>
-          <Center w="full">number of errors: {errorCount}</Center>
-          <div>timeLeft: {timeLeft}</div>
+          <Center w="full">残り時間: {timeLeft}</Center>
         </CardFooter>
       </Card>
-      <SuccessModal isOpen={isOpen} onClose={onClose} />
+      <SuccessModal
+        isOpen={isOpen}
+        onClose={onClose}
+        timeLeft={timeLeft}
+        level={level}
+        errorCount={errorCount}
+      />
     </>
   );
 };
