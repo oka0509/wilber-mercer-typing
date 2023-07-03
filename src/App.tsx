@@ -4,12 +4,13 @@ import "./App.css";
 import Game from "./components/Game";
 import Home from "./components/Home";
 import { Box } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const App: FC = () => {
   return (
     <>
       <Box as="h1" my={10}>
-        <a href="/">Typing game</a>
+        <Link to="/">Typing game</Link>
       </Box>
       <Routes>
         <Route path="/" element={<Home />} />

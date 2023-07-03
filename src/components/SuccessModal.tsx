@@ -8,6 +8,7 @@ import {
   ModalFooter,
   Button,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 type ModalProps = {
   isOpen: boolean;
@@ -36,7 +37,7 @@ const SuccessModal: FC<ModalProps> = ({
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3}>
-            <a href="/">ホーム画面に戻る</a>
+            <Link to="/">ホーム画面に戻る</Link>
           </Button>
         </ModalFooter>
       </ModalContent>
